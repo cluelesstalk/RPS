@@ -1,31 +1,36 @@
-import pygame
+score = {"user": 0, "computer": 0}
 
 def main():
-    pygame.init()
+    print("Welcome to Rock Paper Scissors!")
 
-    screen = pygame.display.set_mode((640, 480))
-    pygame.display.set_caption("Pygame‑CE Test")
+    valid_choices = ["rock", "paper", "scissors"]
+    while True:
+        user_choice = input("Enter your choice (rock, paper, scissors): ").lower()
+        if user_choice not in valid_choices:
+            print("Invalid choice. Please try again.")
+            continue
 
-    clock = pygame.time.Clock()
-    running = True
+        import random
+        computer_choice = random.choice(valid_choices)
+        print(f"Computer chose: {computer_choice}")
 
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        screen.fill((30, 30, 30))  # dark gray background
-
-        # Draw a simple moving circle
-        t = pygame.time.get_ticks() / 500
-        x = 320 + 100 * pygame.math.Vector2(1, 0).rotate(t * 60).x
-        y = 240 + 100 * pygame.math.Vector2(1, 0).rotate(t * 60).y
-        pygame.draw.circle(screen, (0, 200, 255), (int(x), int(y)), 30)
-
-        pygame.display.flip()
-        clock.tick(60)
-
-    pygame.quit()
+        if user_choice == computer_choice:
+            print("It's a tie!")
+        elif (user_choice == "rock" and computer_choice == "scissors") or \
+             (user_choice == "paper" and computer_choice == "rock") or \
+             (user_choice == "scissors" and computer_choice == "paper"):
+            print("You win!")
+            score["user"] += 1
+        else:
+            print("Computer wins!")
+            score["computer"] += 1
+        play_again = input("Do you want to play again? (Y/n): ").lower()
+        if play_again != 'y':
+            print("Thanks for playing!")
+            print("Final Score:")
+            for key, value in score.items():
+                print(f"  {key}: {value}")
+            break
 
 if __name__ == "__main__":
     main()
